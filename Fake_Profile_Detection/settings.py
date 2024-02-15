@@ -36,8 +36,15 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    'django.contrib.staticfiles'
 ]
+
+IBM_APP_ID = {
+    'CLIENT_ID': 'b6e55c73-0de9-491c-bfdc-ad02193e417f',
+    'CLIENT_SECRET': 'YWFhNmNlMWYtYTI2NC00MjY3LTg2YTUtNTM2MWM0MDZiODk5',
+    'OAUTH_SERVER_URL': 'https://eu-gb.appid.cloud.ibm.com/oauth/v4/1057b7bd-389c-44c5-aa0d-15416134053f',
+    'REDIRECT_URI': 'http://127.0.0.1:8000/ibmappid/callback',  # Update with your callback URL
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
