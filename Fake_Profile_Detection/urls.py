@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
 from Insightio import views
 from Insightio.views import login_with_ibm_appid, ibm_appid_callback, logout_view
 
@@ -27,5 +27,6 @@ urlpatterns = [
     path('ibmappid/login/', login_with_ibm_appid, name='login_with_ibm_appid'),
     path('ibmappid/callback/', ibm_appid_callback, name='ibm_appid_callback'),
     path('ibmappid/logout/', logout_view, name='logout'),
+
 
 ]
