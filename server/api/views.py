@@ -8,6 +8,8 @@ import jwt,datetime
 from sklearn.preprocessing import StandardScaler
 import tensorflow as tf
 import json
+from django.http import JsonResponse
+from scrapeomatic.collectors.instagram import Instagram
 
 from tensorflow.keras.models import load_model
 import numpy as np
@@ -93,3 +95,12 @@ def predict(request):
     predictions = (ann_model.predict(X_scaled) > 0.5).astype(int)
 
     return Response({'prediction': predictions[0]})
+
+def scrape_instagram_data(request):
+    # Your Instagram scraping logic
+    user_name = "virat.kohli"
+    instagram_scraper = Instagram()
+    results = instagram_scraper.collect(user_name)
+    
+    # Return scraped data as JSON response
+    return JsonResponse(results)
