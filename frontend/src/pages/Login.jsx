@@ -1,7 +1,7 @@
 // src/components/LoginPage.js
 import React from 'react';
 import { Link } from 'react-router-dom'
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import { toast, Toaster } from 'react-hot-toast'
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -49,6 +49,12 @@ const Login = () => {
         }
     }
 
+    useEffect(()=>{
+        const token = localStorage.getItem("token")
+        if(token){
+            window.location.replace('/dashboard')
+        }
+    })
     return (
         <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-500 to-purple-500">
             <Toaster />

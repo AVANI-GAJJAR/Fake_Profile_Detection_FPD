@@ -5,6 +5,12 @@ from .serializers import UserSerializer
 from rest_framework.decorators import api_view
 from django.contrib.auth.hashers import check_password
 import jwt,datetime
+from sklearn.preprocessing import StandardScaler
+import tensorflow as tf
+import json
+
+from tensorflow.keras.models import load_model
+import numpy as np
 
 @api_view(['POST'])
 def login(request):
@@ -54,4 +60,36 @@ def signup(request):
     else:
         if user_email is not None:
             return Response({'status': 'error', 'message': 'Email already exists'}, status=status.HTTP_400_BAD_REQUEST)
-      
+        
+ann_model = load_model("C:/Users/manya/OneDrive/Desktop/IBM Project/Fake_Profile_Detection/server/Insightio/ann_model.h5")
+
+
+with open('C:/Users/manya/OneDrive/Desktop/IBM Project/Fake_Profile_Detection/server/api/data.json', 'r') as file:
+    json_data = json.load(file)
+
+features = [list(profile.values())[:-1] for profile in json_data]
+
+dummy_data = np.array(features)
+
+scaler = StandardScaler()
+scaler.fit(dummy_data)
+
+@api_view(['POST'])
+def predict(request):
+    data = request.data
+    user_data = {
+        "userFollowerCount": data.get('userFollowerCount'),
+        "userFollowingCount": data.get('userFollowingCount'),
+        "userBiographyLength": data.get('userBiographyLength'),
+        "userMediaCount": data.get('userMediaCount'),
+        "userHasProfilPic": data.get('userHasProfilPic'),
+        "userIsPrivate": data.get('userIsPrivate'),
+        "usernameDigitCount": data.get('usernameDigitCount'),
+        "usernameLength": data.get('usernameLength'),
+    }
+
+    X_scaled = scaler.transform(np.array(list(user_data.values())).reshape(1, -1))
+
+    predictions = (ann_model.predict(X_scaled) > 0.5).astype(int)
+
+    return Response({'prediction': predictions[0]})
