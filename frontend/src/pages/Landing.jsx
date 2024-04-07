@@ -1,9 +1,7 @@
 import React from 'react';
 import ReactSpeedometer from "react-d3-speedometer";
 import { useState } from 'react';
-import {toast,Toaster} from 'react-hot-toast'
-import Loading from './Loading';
-const Prediction = () => {
+const Landing = () => {
     const [userData, setUserData] = useState({
         username: '',
       });
@@ -21,13 +19,9 @@ const Prediction = () => {
       };
       
     const predictHandler = async () => {
-      if(userData.username === ''){
-        toast.error("Username is required");
-        return;
-      }
         try {
-          setLoading(true); 
-          setData(null)
+          setLoading(true);  
+          // Replace 'https://your-api-endpoint' with your actual API endpoint
           const response = await fetch('http://localhost:8000/api/predict', {
             method: 'POST',
             headers: {
@@ -38,27 +32,20 @@ const Prediction = () => {
     
           if (!response.ok) {
             throw new Error('Failed to fetch prediction from the API');
-          }            
-          const result = await response.json();
-          console.log(result)
-          if(result?.status === 'error'){
-            toast.error(result?.message)
           }
-          else{
+    
+          const result = await response.json();
           setData(result?.results)
           setPrediction(result?.prediction)
           return result.prediction; // Adjust this based on your API response structure
-          }
         } catch (error) {
-          console.log(error)
-          toast.error(error?.message);
-
           console.error('Error fetching prediction:', error);
           return 'Error fetching prediction';
         } finally {
           setLoading(false);
         }
       };
+console.log(data?.profile_pic_url)
       const handlePredict = async () => {
         // Call the predictHandler function here
         const result = await predictHandler();
@@ -67,14 +54,13 @@ const Prediction = () => {
       };
     return (
         <div>
-          <Toaster />
             <div className='w-full items-center justify-center grid'>
                 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"></link>
                 <div>
-                    <h1 className='text-[50px] font-bold my-12 text-center'>Fake Instagram<br></br> Account Detector</h1>
-                    <p className=' mt-[-20px]  text-center'>Project accurately discerns fake social media accounts, bolstering online trust with precise <br></br>identification, ensuring platform integrity and user safety</p>
+                    <h1 className='text-[50px] font-bold my-12 text-center'>Instagram Fake<br></br> Account checker</h1>
+                    <p className=' mt-[-20px]  text-center'>Get an influencer's audience audit & identify fake, dormant or suspect followers to<br></br> evaluate an influencer's audience quality.</p>
                 </div>
-                <div className='max-w-3xl my-12 ml-20'>
+                <div className='max-w-3xl my-12 ml-6'>
                     <input className='border border-[black] p-6 w-[340px] outline-none' placeholder='Enter instagram username' 
                      type="text"
                      id="username"
@@ -87,33 +73,32 @@ const Prediction = () => {
                     >Check Profile</button>
                 </div>
             </div>
-            {loading?<Loading />:data?<div className='mx-12 mb-12 border border-gray-300 shadow-lg grid grid-cols-2'>
+            {data?<div className='mx-12 border border-gray-200 grid grid-cols-2'>
                 <div className='border-r-2 my-16'>
-                    <a href={`http://www.instagram.com/${userData?.username}`} target='_blank'><div className='w-full grid justify-center items-center'>
+                    <div className='w-full grid justify-center items-center'>
                         {data?.profile_pic_url?<img src={`${proxyUrl}${data?.profile_pic_url}`}
                          referrerPolicy="no-referrer"
                          crossOrigin="anonymous"
                          headers={{ "X-Requested-With": "XMLHttpRequest" }}
                             className='w-28 h-28 rounded-full'
                         />:""}
-                        <p className='font-bold my-4 text-center'>@{data?.username}</p>
+                        <p className='font-bold my-4 text-center'>@{userData?.username}</p>
 
                     </div>
-                    </a>
-                    <div className='grid justify-center items-center my-8 mx-16 border shadow-xl'>
-                 <ReactSpeedometer
+                    <div className='grid justify-center items-center pt-12'>
+                    <ReactSpeedometer
                 value={prediction}
                 minValue={0}
                 maxValue={1}
-                startColor="green"
-                endColor="red"
-                segments={10}  
-                height={200}
+                needleColor="#eee"
+                startColor="#eee"
+                endColor="#eee"
+                segments={1}  
+                height={300}
                 ringWidth={10}
-                
-            />            
+                // width={3} 
+            />
                     </div>
-                    <p className='text-center font-bold'>{prediction?"This Profile is Fake":"This Profile is Real"}</p>
                 </div>
                 <div className='border m-16 shadow-lg max-h-[420px]'>
                     <div className='flex justify-between items-center'>
@@ -136,4 +121,4 @@ const Prediction = () => {
     );
 }
 
-export default Prediction;
+export default Landing;

@@ -8,3 +8,9 @@ class User(models.Model):
     password = models.CharField(max_length=100 ) 
     def __str__(self):
         return(f"{self.name}")
+
+class Prediction(models.Model):
+    username = models.CharField(max_length=50 )
+    profilePhoto = models.TextField()
+    prediction = models.BooleanField() 
+    timestamp = models.DateTimeField(auto_now_add=True)

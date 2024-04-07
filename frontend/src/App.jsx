@@ -5,7 +5,7 @@ import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Dashboard from './pages/Dashboard'
 import Predictions from './pages/Prediction'
-
+import Landing from './pages/Landing'
 function App() {
 
   return (
@@ -17,6 +17,7 @@ function App() {
           <Route path='/signup' element={<Signup />}></Route>
           <Route path='/dashboard' element={<Dashboard />}></Route>
           <Route path='/predict' element={<Predictions />}></Route>
+          <Route path='/landing' element={<Landing />}></Route>
         </Routes>
       </Router>
     </>

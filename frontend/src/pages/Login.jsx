@@ -56,32 +56,36 @@ const Login = () => {
         }
     })
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-500 to-purple-500">
+        <div className="flex min-h-screen items-center justify-center background rounded-md">
+                            <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"></link>
+
             <Toaster />
-            <div className="bg-white p-8 rounded shadow-md w-96">
-                <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Login</h2>
+            <div className='grid grid-cols-1'            
+            >
+                <div className='w-full grid justify-center items-center bg-white rounded-md shadow-3xl'>
+            <div className=" p-8 rounded shadow-md w-96">
+                <h2 className="text-[37px] font-bold text-center text-gray-800 mb-6">Login</h2>                
                 <form>
                     <div className="mb-4">
-                        <label htmlFor="email" className="block text-gray-600 text-sm mb-2">Email</label>
+                        <label htmlFor="email" className="block text-gray-600 font-bold text-sm mb-2">Email</label>
                         <input type="text"
                             value={formData.email}
                             onChange={handleInputChange}
-                            id="email" className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300" />
+                            id="email" className="w-full px-3 py-2 border rounded " />
                     </div>
                     <div className="mb-4">
-                        <label htmlFor="password" className="block text-gray-600 text-sm mb-2">Password</label>
+                        <label htmlFor="password" className="block text-gray-600 font-bold text-sm mb-2">Password</label>
                         <input type="password"
                             value={formData.password}
                             onChange={handleInputChange}
-                            id="password" className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300" />
+                            id="password" className="w-full px-3 py-2 border rounded " />
                     </div>
-                    <button type="submit" onClick={handleLogin} className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white p-2 rounded hover:bg-gradient-to-r hover:from-blue-600 hover:to-purple-600">
+                    <button type="submit" onClick={handleLogin} className="w-full bg-black py-3 text-white">
                         Login
                     </button>
-                </form>
-                <div className='mt-4'>
-                    New User? <Link to="/signup">Signup</Link>
+                </form>               
                 </div>
+            </div>        
             </div>
         </div>
     );

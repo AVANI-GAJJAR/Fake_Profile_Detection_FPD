@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from Insightio.models import User
+from Insightio.models import User,Prediction
 from django.contrib.auth.hashers import make_password
 
 class UserSerializer(serializers.ModelSerializer):
@@ -15,3 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
+class PredictionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Prediction
+        fields = '__all__'

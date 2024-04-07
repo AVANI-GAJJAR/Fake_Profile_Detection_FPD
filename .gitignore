@@ -45,3 +45,4 @@ __pycache__
 **/migrations/*.pyc
 venv
 server/venv
+node_modules

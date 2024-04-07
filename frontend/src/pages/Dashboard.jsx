@@ -1,125 +1,108 @@
 import React from 'react';
-import { useEffect } from 'react';
-
+import { useEffect,useState } from 'react';
+import axios from 'axios'
+import {Link} from 'react-router-dom'
+import {Table} from 'antd'
 const Dashboard = () => {
 const logout = () => {
   localStorage.clear()
   window.location.replace('/login')
 
 }
+const [data,setData] = useState([])
+const [name,setName] = useState('')
+const proxyUrl = 'http://localhost:8080/';
+
+  const fetchData = async () => {
+    const response = await axios.get('http://localhost:8000/api/predictions')
+    const data = await response
+    setData(data.data)
+    console.log(data)
+
+  }
+
+  const fetchUser = async () => {
+    const id = localStorage.getItem("id")
+    const response = await axios.get(`http://localhost:8000/api/user/${id}`)
+    const data = await response
+    setName(data.data.name)
+    console.log(data)
+  }
 
   useEffect(()=>{
     const token = localStorage.getItem("token")
     if(!token){
         window.location.replace('/login')
     }
-  })
+    fetchUser()
+    fetchData()
+  },[])
+  const columns = [
+    {
+      title: 'Index',
+      dataIndex: 'id',
+      key: 'id',
+      render: (text, record, index) => index + 1,
+    },
+    {
+      title: 'Username',
+      dataIndex: 'username',
+      key: 'username',
+    },
+    {
+      title: 'Profile Photo',
+      dataIndex: 'profilePhoto',
+      key: 'profilePhoto',
+      render: (text, record) => (
+        <img src={`${proxyUrl}${record?.profilePhoto}`}
+        referrerPolicy="no-referrer"
+        crossOrigin="anonymous"
+        headers={{ "X-Requested-With": "XMLHttpRequest" }}
+        alt={record.username} className="w-12 h-12 rounded-full" />
+      ),
+    },
+    {
+      title:'Prediction',
+      dataIndex:'prediction',
+      key:'prediction',
+      render:(text,record)=>(
+        <span>{record.prediction?"Fake":"Not Fake"}</span>
+      )
+    },
+    {
+      title:'Timestamp',
+      dataIndex:'timestamp',
+      key:'timestamp',
+      render:(text,record)=>(
+        new Date(record.timestamp).toLocaleString()
+      )    
+    }
+  ];
+  
   return (
-    <div className="flex bg-black text-white min-h-screen">
-      <div className="w-60 bg-black p-4 transition-all">
+    <div className="flex bg-[#fff] text-white min-h-screen">
+      <div className="w-60 bg-[#4a4a4a] p-4 transition-all">
         <ul className="list-none">
           <li className="flex items-center mb-6">
             <div className="w-12 h-12 rounded-full overflow-hidden border-4 border-white">
               <img src="https://i.postimg.cc/SxbYPS5c/userimg.webp" alt="User" className="w-full" />
             </div>
-            <h2 className="text-white text-lg ml-3">user</h2>
-          </li>
+            <h2 className="text-white text-lg ml-3">{name}</h2>
+          </li>         
           <li>
-            <a href="#" className="flex items-center hover:bg-white bg-opacity-25 rounded p-2 transition duration-500">
-              <p className="text-white ml-3">dashboard</p>
+            <a href="#" className="flex items-center hover:bg-[#242424] bg-opacity-25 rounded p-2 transition duration-500">
+              <Link className="text-white ml-3" to={"/predict"}>Prediction</Link>
             </a>
           </li>
           <li>
-            <a href="#" className="flex items-center hover:bg-white bg-opacity-25 rounded p-2 transition duration-500">
-              <p className="text-white ml-3">clients</p>
-            </a>
-          </li>
-          <li>
-            <a href="#" className="flex items-center hover:bg-white bg-opacity-25 rounded p-2 transition duration-500">
-              <p className="text-white ml-3">product</p>
-            </a>
-          </li>
-          <li>
-            <a href="#" className="flex items-center hover:bg-white bg-opacity-25 rounded p-2 transition duration-500">
-              <p className="text-white ml-3">charts</p>
-            </a>
-          </li>
-          <li>
-            <a href="#" className="flex items-center hover:bg-white bg-opacity-25 rounded p-2 transition duration-500">
-              <p className="text-white ml-3">posts</p>
-            </a>
-          </li>
-          <li>
-            <a href="#" className="flex items-center hover:bg-white bg-opacity-25 rounded p-2 transition duration-500">
-              <p className="text-white ml-3">favorite</p>
-            </a>
-          </li>
-          <li>
-            <a href="#" className="flex items-center hover:bg-white bg-opacity-25 rounded p-2 transition duration-500">
-              <p className="text-white ml-3">settings</p>
-            </a>
-          </li>
-          <li className="log-out">
-              <p className="text-white ml-3" onClick={logout}>Log Out</p>
-          </li>
+              <button className="flex items-center hover:bg-[tomato] bg-opacity-25 rounded p-2 transition duration-500 ml-3" onClick={logout}>Log Out</button>
+          
+          </li>          
         </ul>
       </div>
 
       <div className="flex-1 p-10">
-        <div className="title-info bg-blue-700 p-4 rounded mb-4 flex items-center justify-between">
-          <p className="text-white">Insightio | Dashboard</p>
-        </div>
-        <div className="data-info flex items-center justify-between flex-wrap gap-10">
-          <div className="box bg-black h-48 flex-shrink-0 flex items-center justify-around rounded">
-            <div className="text-white text-4xl">
-              <p>user</p>
-              <span>100</span>
-            </div>
-          </div>
-          <div className="box bg-black h-48 flex-shrink-0 flex items-center justify-around rounded">
-            <div className="text-white text-4xl">
-              <p>posts</p>
-              <span>101</span>
-            </div>
-          </div>
-          <div className="box bg-black h-48 flex-shrink-0 flex items-center justify-around rounded">
-            <div className="text-white text-4xl">
-              <p>Likes</p>
-              <span>102</span>
-            </div>
-          </div>
-          <div className="box bg-black h-48 flex-shrink-0 flex items-center justify-around rounded">
-            <div className="text-white text-4xl">
-              <p>Comments</p>
-              <span>100</span>
-            </div>
-          </div>
-        </div>
-        <div className="title-info bg-blue-700 p-4 rounded my-4">
-          <p className="text-white">Stats</p>
-        </div>
-        <table className="w-full text-white text-center">
-          <thead>
-            <tr>
-              <th className="rounded p-4">Username</th>
-              <th className=" rounded">Followers</th>
-              <th className=" rounded">Following</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td className="p-4 bg-black rounded">user1</td>
-              <td className="rounded"><span className="p-1 rounded">123</span></td>
-              <td className="bg-gold-500 rounded"><span className="p-1 rounded text-white">312</span></td>
-            </tr>
-      
-            <tr>
-              <td className="mt-2 p-4 bg-black rounded">user2</td>
-              <td className="rounded"><span className="p-1 rounded">45</span></td>
-              <td className="bg-gold-500 rounded"><span className="p-1 rounded text-white">30</span></td>
-            </tr>
-          </tbody>
-        </table>
+        <Table columns={columns} dataSource={data} />       
       </div>
     </div>
   );
