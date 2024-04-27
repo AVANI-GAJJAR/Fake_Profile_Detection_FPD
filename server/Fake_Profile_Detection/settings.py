@@ -89,17 +89,29 @@ ALLOWED_HOSTS = ['*']
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
 DATABASES = {
-      'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME':'fpd',
-        'USER':'root',
-        'PASSWORD':'root',
-        'HOST':'localhost',
-        'PORT':'3307',
-    }
+  'default': {
+    'ENGINE': 'django.db.backends.postgresql',
+    'NAME': "fpd",
+    'USER': "fpd_owner",
+    'PASSWORD': "IbwnNOBLz5R7",
+    'HOST': "ep-twilight-tooth-a25rvgwn.eu-central-1.aws.neon.tech",
+    'PORT': 5432,
+    'OPTIONS': {
+      'sslmode': 'require',
+    },
+  }
 }
+# DATABASES = {
+#       'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME':'fpd',
+#         'USER':'root',
+#         'PASSWORD':'root',
+#         'HOST':'localhost',
+#         'PORT':'3307',
+#     }
+# }
 
 
 # Password validation
