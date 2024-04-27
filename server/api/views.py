@@ -56,7 +56,7 @@ def signup(request):
     else:
         return Response({'status': 'error', 'message': 'Email already exists'}, status=status.HTTP_400_BAD_REQUEST)
 
-with open('C:/Users/avani/Downloads/Fake_Profile_Detection/Fake_Profile_Detection/server/api/data.json', 'r') as file:
+with open('./api/data.json', 'r') as file:
     json_data = json.load(file)
 
 features = [list(profile.values())[:-1] for profile in json_data]
@@ -78,7 +78,7 @@ def predict(request):
     
     
     if results:
-        ann_model = load_model("C:/Users/avani/Downloads/Fake_Profile_Detection/Fake_Profile_Detection/server/Insightio/ann_model.h5")                        
+        ann_model = load_model("./Insightio/ann_model.h5")                        
         profile_pic = results['profile_pic_url']
         if(profile_pic):
             profile_pic = True
