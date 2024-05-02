@@ -75,7 +75,7 @@ def predict(request):
         results = instagram_scraper.collect(user_name)
     except Exception as e:
         print(e)
-        return Response({'status': 'error', 'message':'User not found {e}'})
+        return Response({'status': 'error', 'message':e})
     
     
     if results:
